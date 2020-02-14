@@ -24,7 +24,7 @@ endmacro()
 # set(EIGEN3_ROOT ${PROJECT_SOURCE_DIR}/src/eigen)
 # set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-find_package(Eigen3 3.3 REQUIRED)
+#find_package(Eigen3 3.3 REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
 
@@ -96,7 +96,8 @@ find_package(OpenCV REQUIRED)
 # TODO(andrei): See pangolin's 'external' folder for neat ways of bringing in dependencies
 # from GitHub and building them if necessary.
 
-include_directories(${EIGEN3_INCLUDE_DIR})
+#include_directories(${EIGEN3_INCLUDE_DIR})
+include_directories("usr/include/eigen3")
 include_directories(${Viso2_INCLUDE_DIRS})
 include_directories(${Pangolin_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})

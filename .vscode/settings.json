@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        ".gcloudignore": "gitignore",
+        "*.cjson": "jsonc",
+        "*.wxss": "css",
+        "*.wxs": "javascript",
+        "vector": "cpp"
+    }
+}
