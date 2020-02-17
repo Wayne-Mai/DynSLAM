@@ -75,6 +75,8 @@ class Input {
     config.depth_fname_format     = "%04d.xml";
     config.read_depth             = true;
 
+    // note seg folder location
+    // for mini-seq-6 /data/wayne/SLAM/data/mini-seq-06/seg_image_2/mnc
     config.segmentation_folder    = "seg_image_2/mnc";
 
     config.odometry_oxts          = false;

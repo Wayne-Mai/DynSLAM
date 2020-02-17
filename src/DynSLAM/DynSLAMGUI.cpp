@@ -1116,6 +1116,7 @@ void BuildDynSlamKittiOdometry(const string &dataset_root,
   }
   float downscale_factor_f = static_cast<float>(downscale_factor);
 
+    // mini-seq-06 
   if (FLAGS_dataset_type == kKittiOdometry) {
     if (downscale_factor != 1.0) {
       if (FLAGS_use_dispnet) {
@@ -1127,6 +1128,7 @@ void BuildDynSlamKittiOdometry(const string &dataset_root,
     }
     else {
       if (FLAGS_use_dispnet) {
+        // note config here
         input_config = Input::KittiOdometryDispnetConfig();
       }
       else {
@@ -1226,6 +1228,8 @@ void BuildDynSlamKittiOdometry(const string &dataset_root,
       voxel_decay_params,
       FLAGS_use_depth_weighting);
 
+
+    // note seg code right location
   const string seg_folder = dataset_root + "/" + input_config.segmentation_folder;
   auto segmentation_provider =
       new instreclib::segmentation::PrecomputedSegmentationProvider(
