@@ -20,7 +20,7 @@
 import sys
 import os
 
-mask_rcnn_path = os.path.abspath("../../../deps/Mask_RCNN")
+mask_rcnn_path = os.path.abspath("../Mask_RCNN")
 sys.path.insert(0, mask_rcnn_path)
 
 import random

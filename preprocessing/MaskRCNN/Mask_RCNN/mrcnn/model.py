@@ -2479,6 +2479,7 @@ class MaskRCNN():
 
         return boxes, class_ids, scores, full_masks
 
+    # note returned result is located here
     def detect(self, images, verbose=0):
         """Runs the detection pipeline.
 
