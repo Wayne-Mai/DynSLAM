@@ -56,6 +56,9 @@ configure_file("../config.toml.in" "${CMAKE_CURRENT_BINARY_DIR}/config.toml")
 file(GLOB srcs *.cpp)
 file(GLOB tools_srcs Tools/*.cpp)
 
+
+# Modify to start debug mode
+set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -msse -msse2 -msse3")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -67,6 +70,8 @@ else(CMAKE_BUILD_TYPE MATCHES Release)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 add_definitions(-Dlinux=1)
+add_definitions("-DWAYNE_DEBUG")
+
 
 add_executable(MaskFusion
                ${srcs}

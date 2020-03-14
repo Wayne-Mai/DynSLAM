@@ -19,7 +19,7 @@
 #include "Resize.h"
 
 GPUResize::GPUResize(int srcWidth, int srcHeight, int destWidth, int destHeight)
-    : imageTexture(destWidth, destHeight, GL_RGBA, GL_RGB, GL_UNSIGNED_BYTE, false, true),
+   : imageTexture(destWidth, destHeight, GL_RGBA, GL_RGB, GL_UNSIGNED_BYTE, false, true),
       vertexTexture(destWidth, destHeight, GL_RGBA32F, GL_LUMINANCE, GL_FLOAT, false, true),
       timeTexture(destWidth, destHeight, GL_LUMINANCE16UI_EXT, GL_LUMINANCE_INTEGER_EXT, GL_UNSIGNED_SHORT, false, true),
       imageProgram(loadProgramFromFile("empty.vert", "resize.frag", "quad.geom")),
@@ -27,7 +27,28 @@ GPUResize::GPUResize(int srcWidth, int srcHeight, int destWidth, int destHeight)
       vertexProgram(loadProgramFromFile("empty.vert", "resize.frag", "quad.geom")),
       vertexRenderBuffer(destWidth, destHeight),
       timeProgram(loadProgramFromFile("empty.vert", "resize.frag", "quad.geom")),
-      timeRenderBuffer(destWidth, destHeight) {
+      timeRenderBuffer(destWidth, destHeight) 
+{
+# ifdef WAYNE_DEBUG
+    std::cout << "Calling GPUREesize. Start...\n";
+# endif
+
+  std::cout << "Calling GPUREesize. Start repeat...\n";
+
+//   imageTexture=GPUTexture(destWidth, destHeight, GL_RGBA, GL_RGB, GL_UNSIGNED_BYTE, false, true);
+//   vertexTexture=GPUTexture(destWidth, destHeight, GL_RGBA32F, GL_LUMINANCE, GL_FLOAT, false, true);
+//   timeTexture=GPUTexture(destWidth, destHeight, GL_LUMINANCE16UI_EXT, GL_LUMINANCE_INTEGER_EXT, GL_UNSIGNED_SHORT, false, true);
+
+//   imageProgram=std::shared_ptr<Shader>(loadProgramFromFile("empty.vert", "resize.frag", "quad.geom"));
+//   imageRenderBuffer=pangolin::GlRenderBuffer(destWidth, destHeight);
+
+//   vertexProgram=std::shared_ptr<Shader>(loadProgramFromFile("empty.vert", "resize.frag", "quad.geom"));
+//   vertexRenderBuffer=pangolin::GlRenderBuffer(destWidth, destHeight);
+
+//   timeProgram=std::shared_ptr<Shader>(loadProgramFromFile("empty.vert", "resize.frag", "quad.geom"));
+//   timeRenderBuffer=pangolin::GlRenderBuffer(destWidth, destHeight);
+
+
   imageFrameBuffer.AttachColour(*imageTexture.texture);
   imageFrameBuffer.AttachDepth(imageRenderBuffer);
 
@@ -36,7 +57,13 @@ GPUResize::GPUResize(int srcWidth, int srcHeight, int destWidth, int destHeight)
 
   timeFrameBuffer.AttachColour(*timeTexture.texture);
   timeFrameBuffer.AttachDepth(timeRenderBuffer);
+
+# ifdef WAYNE_DEBUG
+    std::cout << "END GPUREesize. Start...\n";
+# endif
+
 }
+
 
 GPUResize::~GPUResize() {}
 

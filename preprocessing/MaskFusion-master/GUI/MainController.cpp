@@ -271,6 +271,14 @@ MainController::MainController(int argc, char* argv[])
         # endif
     }
 
+
+    
+
+
+# ifdef WAYNE_DEBUG
+    std::cout << "\n Entering GPUREesize from top repeat. ...\n";
+# endif
+
     // Load configuration from files
     # ifdef WITH_GUI
     if(pangolin::FileExists("parameters.cfg"))
@@ -323,8 +331,18 @@ MainController::MainController(int argc, char* argv[])
     // gui->pause->Ref().Set(!showcaseMode);
     # endif
 
+
+# ifdef WAYNE_DEBUG
+    std::cout << "\n Entering GPUREesize from main. ...\n";
+# endif
+
     resizeStream = new GPUResize(Resolution::getInstance().width(), Resolution::getInstance().height(), Resolution::getInstance().width() / 2,
                                  Resolution::getInstance().height() / 2);
+
+# ifdef WAYNE_DEBUG
+    std::cout << "\n Finishing GPUREesize from main. ...\n";
+# endif
+
 
     if (Parse::get().arg(argc, argv, "-exportdir", exportDir) > 0) {
         if (exportDir.length() == 0 || exportDir[0] != '/') exportDir = baseDir + exportDir;

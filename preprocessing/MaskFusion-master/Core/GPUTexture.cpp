@@ -34,6 +34,11 @@ GPUTexture::GPUTexture(const int width, const int height, const GLint internalFo
       dataType(dataType),
       cudaRes(nullptr),
       cudaSurfHandle(0) {
+
+# ifdef WAYNE_DEBUG
+    std::cout << "Calling GPUTexture. Start...\n";
+# endif
+
     if (cuda) {
         cudaGraphicsGLRegisterImage(&cudaRes, texture->tid, GL_TEXTURE_2D, cudaFlags);
 

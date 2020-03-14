@@ -62,6 +62,12 @@ class Shader : public pangolin::GlSlProgram {
 
 static inline std::shared_ptr<Shader> loadProgramGeomFromFile(const std::string& vertex_shader_file,
                                                               const std::string& geometry_shader_file) {
+
+# ifdef WAYNE_DEBUG
+    std::cout << "Calling GPU Shared ptr Shader. Start...\n";
+# endif
+
+
   std::shared_ptr<Shader> program = std::make_shared<Shader>();
 
   program->AddShaderFromFile(pangolin::GlSlVertexShader, Parse::get().shaderDir() + "/" + vertex_shader_file, {},

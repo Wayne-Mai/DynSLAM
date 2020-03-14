@@ -133,9 +133,7 @@ ImageLogReader::ImageLogReader(std::string colorDirectory, std::string depthDire
     std::stringstream ss;
     ss << std::setw(indexW) << std::setfill('0') << index;
     std::string path = colorDirectory + colorPre + ss.str() + colorExt;
-    # ifdef WAYNE_DEBUG
-    std::cout << "so there is a path"<<path;
-    # endif 
+    
     if (exists(path)) {
       startIndex = index;
       break;
@@ -144,6 +142,10 @@ ImageLogReader::ImageLogReader(std::string colorDirectory, std::string depthDire
   if (index == 2) throw std::invalid_argument("Error: Could not find start index.");
 
   std::cout << "Opened dataset with " << numFrames << " frames, starting with index: " << startIndex;
+  # ifdef WAYNE_DEBUG
+    std::cout << "\n Logging in ImageLogReader\n";
+ # endif 
+
   if (hasMasksGT) std::cout << " The dataset also provides masks.";
   std::cout << std::endl;
 
