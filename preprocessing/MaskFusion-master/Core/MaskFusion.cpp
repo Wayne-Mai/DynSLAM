@@ -197,6 +197,17 @@ void MaskFusion::computeFeedbackBuffers() {
     TOCK("feedbackBuffers");
 }
 
+// note process frame
+/*
+MfSegmentation::MfSegmentation(int w, int h,
+                                       const CameraModel& cameraIntrinsics,
+                                       bool embedMaskRCNN,
+                                       std::shared_ptr<GPUTexture> textureRGB,
+                                       std::shared_ptr<GPUTexture> textureDepthMetric,
+                                       GlobalProjection* globalProjection,
+                                       std::queue<FrameDataPointer>* queue) :
+
+*/
 bool MaskFusion::processFrame(FrameDataPointer frame, const Eigen::Matrix4f* inPose, const float weightMultiplier, const bool bootstrap) {
     assert(frame->depth.type() == CV_32FC1);
     assert(frame->rgb.type() == CV_8UC3);
@@ -211,6 +222,8 @@ bool MaskFusion::processFrame(FrameDataPointer frame, const Eigen::Matrix4f* inP
     // Upload RGB to graphics card
     textureRGB->texture->Upload(frame->rgb.data, GL_RGB, GL_UNSIGNED_BYTE);
 
+
+    // note maskfusion class preprocess
     TICK("Preprocess");
 
     textureDepthMetric->texture->Upload((float*)frame->depth.data, GL_LUMINANCE, GL_FLOAT);
@@ -293,6 +306,8 @@ bool MaskFusion::processFrame(FrameDataPointer frame, const Eigen::Matrix4f* inP
 
                 if (spawnOffset < modelSpawnOffset) spawnOffset++;
 
+
+                // note maskfusion call perform segmentation function
                 SegmentationResult segmentationResult = performSegmentation(frame);
                 textureMask->texture->Upload(segmentationResult.fullSegmentation.data, GL_LUMINANCE_INTEGER_EXT, GL_UNSIGNED_BYTE);
 

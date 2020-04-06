@@ -33,6 +33,7 @@
     const std::string WRITE_MASK_DIR = "/tmp/mf";
 #endif
 
+
 MfSegmentation::MfSegmentation(int w, int h,
                                        const CameraModel& cameraIntrinsics,
                                        bool embedMaskRCNN,
@@ -80,6 +81,12 @@ MfSegmentation::MfSegmentation(int w, int h,
 
 MfSegmentation::~MfSegmentation(){}
 
+
+// note return labelGenerator.performSegmentation(models, frame, getNextModelID(), spawnOffset >= modelSpawnOffset);
+/*
+models : maskRCNN
+Frame : GPU Buffer
+*/
 SegmentationResult MfSegmentation::performSegmentation(std::list<std::shared_ptr<Model> > &models,
                                                            FrameDataPointer frame,
                                                            unsigned char nextModelID,
@@ -125,6 +132,7 @@ SegmentationResult MfSegmentation::performSegmentation(std::list<std::shared_ptr
     }
 #endif
 
+    // TODO does MaskRCNN finished here ?? YES. result in frame-mask
     if(frame->mask.total() == 0) {
         if(!maskRCNN) throw std::runtime_error("MaskRCNN is not embedded and no masks were pre-computed.");
         else if(sequentialMaskRCNN) maskRCNN->executeSequential(frame);
@@ -171,6 +179,7 @@ SegmentationResult MfSegmentation::performSegmentation(std::list<std::shared_ptr
     // TODO: Also fix "downloadDirect"
     //cv::Mat projectedDepth = globalProjection->getProjectedDepth(); // TODO remove and perform relevant steps directly on the GPU, this can save time!
 
+    // this is just initialize... anyway
     TICK("segmentation-DL");
     for (unsigned char m = 0; m < models.size(); ++m,++modelItr) {
         ModelBuffers& mBuffers = modelBuffers[m];
@@ -218,8 +227,10 @@ SegmentationResult MfSegmentation::performSegmentation(std::list<std::shared_ptr
 #endif
 
     // Build use ignore map
+    // total is the total pixels, so following code is traversing every pixel
     if(nMasks){
         for(size_t i=0; i<total; i++){
+            // if this instance/mask is person, set geom mask to zero too
             if(frame->classIDs[frame->mask.data[i]] == personClassID){
                 semanticIgnoreMap.data[i] = 255;
                 cv8UC1Buffer.data[i] = 0;

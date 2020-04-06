@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6.0)
 
-project(MaskGenerate)
+project(maskfusion-gui)
 
 message("Evaluating GUI/CMAKE")
 

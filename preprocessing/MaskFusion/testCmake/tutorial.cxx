@@ -20,5 +20,13 @@
     double outputValue = sqrt(inputValue);
     fprintf(stdout, "The square root of %g is %g\n",
               inputValue, outputValue);
+    
+    int* ptr=new int[10];
+    ptr[0]=20;
+    while(int i=0;i<10;i++){
+        printf("Value %d \n", ptr[i]);
+    }
+    delete[] ptr;
+
     return 0;
   }

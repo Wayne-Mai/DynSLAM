@@ -66,6 +66,7 @@ class MaskFusion {
        * @param bootstrap if true, use inPose as a pose guess rather than replacement
        * @return returns true if a pause might be interesting, can be ignored without hesitation
        */
+      
   bool processFrame(FrameDataPointer frame, const Eigen::Matrix4f* inPose = 0, const float weightMultiplier = 1.f,
                     const bool bootstrap = false);
 
