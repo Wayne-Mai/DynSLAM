@@ -8,7 +8,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}")
 
 find_package(ZLIB REQUIRED)
 find_package(CUDA REQUIRED)
-find_package(OpenNI2 REQUIRED)
+# find_package(OpenNI2 REQUIRED)
 find_package(OpenCV 3.1 REQUIRED )
 find_package(Boost 1.58.0 REQUIRED)
 
@@ -99,7 +99,7 @@ target_link_libraries(MaskFusionTools
                       ${ZLIB_LIBRARY}
                       ${Pangolin_LIBRARIES}
                       ${CUDA_LIBRARIES}
-                      ${OPENNI2_LIBRARY}
+#                     ${OPENNI2_LIBRARY}
                       ${OpenCV_LIBRARIES}
                       ${freenect2_LIBRARIES}
                       boost_filesystem
@@ -112,7 +112,7 @@ target_include_directories(MaskFusionTools PUBLIC
                             ${ZLIB_INCLUDE_DIR}
                             ${Pangolin_INCLUDE_DIRS}
                             ${CUDA_INCLUDE_DIRS}
-                            ${OPENNI2_INCLUDE_DIR}
+#                           ${OPENNI2_INCLUDE_DIR}
                             ${OpenCV_INCLUDE_DIRS}
                             ${BOOST_INCLUDE_DIRS}
                             ${freenect2_INCLUDE_DIR}
