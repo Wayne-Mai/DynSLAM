@@ -1,30 +1,57 @@
-  
-#include "Utils/Macros.h"
-#include "Utils/RGBDOdometry.h"
-#include "Utils/Resolution.h"
-#include "Utils/Intrinsics.h"
-#include "Utils/Stopwatch.h"
-#include "Callbacks.h"
-#include "Shaders/Shaders.h"
-#include "Shaders/ComputePack.h"
-#include "Shaders/FeedbackBuffer.h"
-#include "Shaders/FillIn.h"
-#include "Model/Deformation.h"
-#include "Model/Model.h"
-#include "Model/ModelProjection.h"
-#include "Model/GlobalProjection.h"
-#include "Ferns.h"
-#include "PoseMatch.h"
-#include "FrameData.h"
-#include "Segmentation/Segmentation.h"
-#include <list>
-#include <iomanip>
-#include <memory>
-#include <pangolin/gl/glcuda.h>
+#include "../Core/Utils/Macros.h"
+#include "MainController.h"
+#include "Tools/KlgLogReader.h"
+#include "Tools/OpenNI2LiveReader.h"
+#ifdef WITH_FREENECT2
+#include "Tools/FreenectLiveReader.h"
+#endif
+#include "Tools/ImageLogReader.h"
 
-#include "../Utils/Parse.h"
+#include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
+#include <GUI/Tools/PangolinReader.h>
+#include <opencv2/core/ocl.hpp>
+#include <toml.hpp>
 
-int main(){
+
+int main(int argc, char* argv[]){
+
+
+// mainControler staff
+  bool good;
+  MaskFusion* maskFusion;
+  GUI* gui;
+  bool showcaseMode;
+  GroundTruthOdometry* groundTruthOdometry;
+  std::unique_ptr<LogReader> logReader;
+
+  bool iclnuim;
+  std::string logFile;
+  std::string poseFile;
+  std::string exportDir;
+  bool exportSegmentation;
+  bool exportViewport;
+  bool exportLabels;
+  bool exportNormals;
+  bool exportPoses;
+  bool exportModels;
+
+  float confGlobalInit, confObjectInit, icpErrThresh, covThresh, photoThresh, fernThresh;
+
+  int timeDelta, icpCountThresh, start, end, preallocatedModelsCount, frameQueueSize;
+
+  bool fillIn, openLoop, reloc, frameskip, quit, fastOdom, so3, rewind, frameToFrameRGB, usePrecomputedMasksOnly;
+
+  int framesToSkip;
+  bool streaming;
+  bool resetButton;
+  Segmentation::Method segmentationMethod;
+
+  GPUResize* resizeStream;
+
+  std::set<int> trackableClassIds;
+
+
 
     std::string tmpString;
     float tmpFloat;
@@ -51,14 +78,14 @@ int main(){
         Intrinsics::setIntrinics(528, 528, 320, 240);
     }
 
-    if (calibrationFile.length()) loadCalibration(calibrationFile);
-    std::cout << "Calibration set to resolution: " <<
-                 Resolution::getInstance().width() << "x" <<
-                 Resolution::getInstance().height() <<
-                 ", [fx: " << Intrinsics::getInstance().fx() <<
-                 " fy: " << Intrinsics::getInstance().fy() <<
-                 ", cx: " << Intrinsics::getInstance().cx() <<
-                 " cy: " << Intrinsics::getInstance().cy() << "]" << std::endl;
+    // if (calibrationFile.length()) loadCalibration(calibrationFile);
+    // std::cout << "Calibration set to resolution: " <<
+    //              Resolution::getInstance().width() << "x" <<
+    //              Resolution::getInstance().height() <<
+    //              ", [fx: " << Intrinsics::getInstance().fx() <<
+    //              " fy: " << Intrinsics::getInstance().fy() <<
+    //              ", cx: " << Intrinsics::getInstance().cx() <<
+    //              " cy: " << Intrinsics::getInstance().cy() << "]" << std::endl;
 
     bool logReaderReady = false;
 
@@ -96,15 +123,42 @@ int main(){
             if (Parse::get().arg(argc, argv, "-nm", maxMasks) > -1) {
                 if (maxMasks >= 0)
                     imageLogReader->setMaxMasks(maxMasks);
-                else
+                else{
                     imageLogReader->ignoreMask();
+                    # ifdef WAYNE_DEBUG
+                    std::cout<<"\n Log : Image LogReader Ready in Ignore Mask.\n";
+                    # endif
+
+                }
             }
 
             logReader = std::unique_ptr<LogReader>(imageLogReader);
             usePrecomputedMasksOnly = imageLogReader->hasPrecomputedMasksOnly();
             logReaderReady = true;
+
+            # ifdef WAYNE_DEBUG
+            std::cout<<"\n Log : Use precomputed mask ? : "<<usePrecomputedMasksOnly<<std::endl;;
+            # endif
+
         }
     }
+
+
+
+# ifdef WAYNE_DEBUG
+    std::cout<<"\n Log : Image-loger initialize success.\n";
+# endif
+
+
+    // Start process frame
+
+    if (maskFusion->processFrame(logReader->getFrameData(), currentPose, weightMultiplier) && !showcaseMode) {
+                    gui->pause->Ref().Set(true);
+                }
+    logReader->getFrameData == frame.
+    
+    SegmentationResult segmentationResult = performSegmentation(frame);
+
 
     return 0;
 

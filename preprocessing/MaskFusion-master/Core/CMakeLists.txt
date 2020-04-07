@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6.0)
 
-project(MaskGenerate)
+project(maskfusion-gui)
 
 message("Evaluating GUI/CMAKE")
 
@@ -8,7 +8,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}")
 
 find_package(ZLIB REQUIRED)
 find_package(CUDA REQUIRED)
-# find_package(OpenNI2 REQUIRED)
+find_package(OpenNI2 REQUIRED)
 find_package(OpenCV 3.1 REQUIRED )
 find_package(Boost 1.58.0 REQUIRED)
 
@@ -56,9 +56,6 @@ configure_file("../config.toml.in" "${CMAKE_CURRENT_BINARY_DIR}/config.toml")
 file(GLOB srcs *.cpp)
 file(GLOB tools_srcs Tools/*.cpp)
 
-
-# Modify to start debug mode
-set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -msse -msse2 -msse3")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -70,8 +67,6 @@ else(CMAKE_BUILD_TYPE MATCHES Release)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 add_definitions(-Dlinux=1)
-add_definitions("-DWAYNE_DEBUG")
-
 
 add_executable(MaskFusion
                ${srcs}
@@ -99,7 +94,7 @@ target_link_libraries(MaskFusionTools
                       ${ZLIB_LIBRARY}
                       ${Pangolin_LIBRARIES}
                       ${CUDA_LIBRARIES}
-#                     ${OPENNI2_LIBRARY}
+                      ${OPENNI2_LIBRARY}
                       ${OpenCV_LIBRARIES}
                       ${freenect2_LIBRARIES}
                       boost_filesystem
@@ -112,7 +107,7 @@ target_include_directories(MaskFusionTools PUBLIC
                             ${ZLIB_INCLUDE_DIR}
                             ${Pangolin_INCLUDE_DIRS}
                             ${CUDA_INCLUDE_DIRS}
-#                           ${OPENNI2_INCLUDE_DIR}
+                            ${OPENNI2_INCLUDE_DIR}
                             ${OpenCV_INCLUDE_DIRS}
                             ${BOOST_INCLUDE_DIRS}
                             ${freenect2_INCLUDE_DIR}
