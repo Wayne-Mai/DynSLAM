@@ -13,6 +13,14 @@
 #include <opencv2/core/ocl.hpp>
 #include <toml.hpp>
 
+#ifdef WAYNE_DEBUG
+    int WRITE_MASK_INDEX = 0;
+    const std::string WRITE_MASK_DIR = "/data/wayne/SLAM/train_log/";
+#endif
+
+#include "../Core/Segmentation/MaskRCNN/MaskRCNN.h"
+
+class MaskRCNN;
 
 int main(int argc, char* argv[]){
 
@@ -151,13 +159,48 @@ int main(int argc, char* argv[]){
 
 
     // Start process frame
+    FrameDataPointer frame=logReader->getFrameData();
 
-    if (maskFusion->processFrame(logReader->getFrameData(), currentPose, weightMultiplier) && !showcaseMode) {
-                    gui->pause->Ref().Set(true);
-                }
-    logReader->getFrameData == frame.
-    
-    SegmentationResult segmentationResult = performSegmentation(frame);
+    // note initialize MaskRCNN module
+    // std::unique_ptr<MaskRCNN> maskRCNN;
+    // bool sequentialMaskRCNN;
+    // std::queue<FrameDataPointer> queue; //  should be nullptr ???
+    bool sequentialMaskRCNN=true;
+    std::unique_ptr<MaskRCNN> maskRCNN;
+
+    // // if(embedMaskRCNN){ // usePreComputedMask
+    if(true){
+        maskRCNN = std::make_unique<MaskRCNN>(nullptr); // queue in sourceCode
+        // sequentialMaskRCNN = (queue == nullptr);
+    }
+
+
+    // if (maskFusion->processFrame(logReader->getFrameData(), currentPose, weightMultiplier) && !showcaseMode) {
+    //                 gui->pause->Ref().Set(true);
+    //             }
+    // logReader->getFrameData == frame.
+
+    // SegmentationResult segmentationResult = performSegmentation(frame);
+
+    // SegmentationResult MaskFusion::performSegmentation(FrameDataPointer frame) {
+    //     return labelGenerator.performSegmentation(models, frame, getNextModelID(), spawnOffset >= modelSpawnOffset);
+    // }
+
+    // SegmentationResult MfSegmentation::performSegmentation(std::list<std::shared_ptr<Model> > &models,
+    //                                                        FrameDataPointer frame,
+    //                                                        unsigned char nextModelID,
+    //                                                        bool allowNew){
+
+
+    if(frame->mask.total() == 0) {
+    if(!maskRCNN) throw std::runtime_error("MaskRCNN is not embedded and no masks were pre-computed.");
+    else if(sequentialMaskRCNN) maskRCNN->executeSequential(frame);
+    }
+
+#ifdef WAYNE_DEBUG
+    cv::imwrite(WRITE_MASK_DIR + "mrcnn" + std::to_string(frame->index) + ".png", frame->mask);
+#endif
+
 
 
     return 0;
