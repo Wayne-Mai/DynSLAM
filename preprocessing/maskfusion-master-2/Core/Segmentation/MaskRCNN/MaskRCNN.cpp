@@ -41,7 +41,46 @@ void MaskRCNN::initialise(){
     std::cout << "* Initialising MaskRCNN (thread: " << std::this_thread::get_id() << ") ..." << std::endl;
 
     Py_SetProgramName((wchar_t*)L"MaskRCNN");
+
+
+    // ['', '/home/wayne/miniconda3/envs/slam-tf/lib/python36.zip', '/home/wayne/miniconda3/envs/slam-tf/lib/python3.6', 
+    // '/home/wayne/miniconda3/envs/slam-tf/lib/python3.6/lib-dynload', '/home/wayne/miniconda3/envs/slam-tf/lib/python3.6/site-packages']
+
+
+// ['', '/home/wayne/miniconda3/envs/slam-tf2/lib/python35.zip', 
+// '/home/wayne/miniconda3/envs/slam-tf2/lib/python3.5', 
+// '/home/wayne/miniconda3/envs/slam-tf2/lib/python3.5/plat-linux', 
+// '/home/wayne/miniconda3/envs/slam-tf2/lib/python3.5/lib-dynload', 
+// '/home/wayne/.local/lib/python3.5/site-packages',
+//  '/home/wayne/miniconda3/envs/slam-tf2/lib/python3.5/site-packages']
+
+// ['', '/home/wayne/miniconda3/envs/slam-tf2/lib/python37.zip', 
+// '/home/wayne/miniconda3/envs/slam-tf2/lib/python3.7', 
+// '/home/wayne/miniconda3/envs/slam-tf2/lib/python3.7/lib-dynload', 
+// '/home/wayne/miniconda3/envs/slam-tf2/lib/python3.7/site-packages']
+
+
+    // fixme hard code to set 
+    // Py_SetPythonHome((wchar_t*)L"/home/wayne/miniconda3/envs/slam-tf2/lib/python37.zip:"
+    //                             "/home/wayne/miniconda3/envs/slam-tf2/lib/python3.7:"
+    //                             // "/home/wayne/miniconda3/envs/slam-tf2/lib/python3.5/plat-linux:"
+    //                             "/home/wayne/miniconda3/envs/slam-tf2/lib/python3.7/lib-dynload:"
+    //                             // "/home/wayne/.local/lib/python3.5/site-packages:"
+    //                             "/home/wayne/miniconda3/envs/slam-tf2/lib/python3.7/site-packages:"
+    // );
+    wchar_t* pyHomePath=Py_GetPythonHome();
+    std::cout<<"Current Python Home Path using is "<<std::endl;
+    std::wcout<<pyHomePath<<std::endl;
+    
+
+    std::cout<<"\nSet Python home success.\n";
     Py_Initialize();
+
+    const char* pyVersion=Py_GetVersion();
+    std::cout<<"Current Python Version using is "<<std::endl;
+    std::cout<<pyVersion<<std::endl;
+
+
     wchar_t const * argv2[] = { L"MaskRCNN.py" };
     PySys_SetArgv(1, const_cast<wchar_t**>(argv2));
 
@@ -145,10 +184,33 @@ void MaskRCNN::extractBoundingBoxes(std::vector<cv::Rect> *result){
 }
 
 void MaskRCNN::executeSequential(FrameDataPointer frameData){
-    Py_XDECREF(PyObject_CallFunctionObjArgs(pExecute, createArguments(frameData->rgb), NULL));
-    extractClassIDs(&frameData->classIDs);
-    extractBoundingBoxes(&frameData->rois);
-    frameData->mask = extractImage(); // In this case, we can treat the assignment as atomic
+
+    std::cout<<"\nLog : Entering execute Sequential.\n";
+
+    # ifdef WAYNE_DEBUG
+    std::cout<<"\nLog : Entering execute Sequential.\n";
+    # endif 
+
+    // Py_XDECREF(PyObject_CallFunctionObjArgs(pExecute, createArguments(frameData->rgb), NULL));
+
+    # ifdef WAYNE_DEBUG
+    std::cout<<"\nLog : Entering extractClassIDs.\n";
+    # endif 
+
+    // extractClassIDs(&frameData->classIDs);
+
+    # ifdef WAYNE_DEBUG
+    std::cout<<"\nLog : Entering Extract Bounding Boxes.\n";
+    # endif 
+
+    // extractBoundingBoxes(&frameData->rois);
+
+    # ifdef WAYNE_DEBUG
+    std::cout<<"\nLog : Entering Extract Image.\n";
+    # endif 
+
+
+    // frameData->mask = extractImage(); // In this case, we can treat the assignment as atomic
 
 #if 0
     // This is visualization code for debugging purposes

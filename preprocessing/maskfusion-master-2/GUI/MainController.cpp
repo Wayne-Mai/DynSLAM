@@ -461,6 +461,7 @@ void MainController::run() {
                     *currentPose = groundTruthOdometry->getIncrementalTransformation(logReader->getFrameData()->timestamp);
                 }
 
+                // note Process frame here 
                 if (maskFusion->processFrame(logReader->getFrameData(), currentPose, weightMultiplier) && !showcaseMode) {
                     gui->pause->Ref().Set(true);
                 }

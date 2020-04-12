@@ -25,3 +25,19 @@ int main(int argc, char* argv[]) {
 
   return 0;
 }
+
+
+
+
+[ 77%] Built target libmaskfusion
+[ 79%] Linking CXX executable MaskFusion
+/usr/bin/ld: CMakeFiles/MaskFusion.dir/main.cpp.o: undefined reference to symbol 'PyExc_RuntimeError'
+//usr/lib/x86_64-linux-gnu/libpython3.5m.so.1.0: error adding symbols: DSO missing from command line
+collect2: error: ld returned 1 exit status
+GUI/CMakeFiles/MaskFusion.dir/build.make:354: recipe for target 'GUI/MaskFusion' failed
+make[2]: *** [GUI/MaskFusion] Error 1
+CMakeFiles/Makefile2:211: recipe for target 'GUI/CMakeFiles/MaskFusion.dir/all' failed
+make[1]: *** [GUI/CMakeFiles/MaskFusion.dir/all] Error 2
+Makefile:83: recipe for target 'all' failed
+make: *** [all] Error 2
+(slam-tf) wayne@amax:~/SLAM/DynSLAM/preprocessing/ma

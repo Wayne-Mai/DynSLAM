@@ -14,7 +14,7 @@ find_package(CUDA REQUIRED)
 find_package(SuiteSparse REQUIRED)
 find_package(OpenCV 3.1 REQUIRED)
 find_package(OpenMP)
-find_package(PythonLibs)
+# find_package(PythonLibs)
 
 if (OPENMP_FOUND)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -44,6 +44,19 @@ set(DENSECRF_INCLUDE_DIRS "${DENSECRF_DIR}/include")
 set(DENSECRF_LIBRARIES densecrf)
 set(maskfusion_SHADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Shaders" CACHE PATH "Where the shaders live")
 
+
+# -DPYTHON_LIBRARY=/home/gmarkall/.conda/envs/py34np19/lib/libpython3.so 
+# -DPYTHON_INCLUDE_DIR=/home/gmarkall/.conda/envs/py34np19/include/python3.4m
+
+
+# note Hard code the python path, should be improved in the future, PYTHON_INCLUDE_DIR/ PATH
+# set(PYTHON_LIBRARY "/home/wayne/miniconda3/envs/slam-tf/lib/libpython3.6m.so")
+# set(PYTHON_INCLUDE_DIR "/home/wayne/miniconda3/envs/slam-tf/include/python3.6m")
+
+set(PYTHON_INCLUDE_DIRS "/home/wayne/miniconda3/envs/slam-tf2/include/python3.7m")
+set(PYTHON_LIBRARIES "/home/wayne/miniconda3/envs/slam-tf2/lib/libpython3.7m.so")
+
+
 message("Using: ")
 message("=======")
 message("Using DENSECRF_DIR: ${DENSECRF_DIR}")
@@ -51,6 +64,13 @@ message("Using maskfusion_SHADER_DIR: ${maskfusion_SHADER_DIR}")
 message("Using python:  ${PYTHONLIBS_VERSION_STRING} ")
 message("Using PYTHON_LIBRARIES:  ${PYTHON_LIBRARIES} ")
 message("Using PYTHON_INCLUDE_DIRS:  ${PYTHON_INCLUDE_DIRS} ")
+
+# Using DENSECRF_DIR: /home/wayne/SLAM/DynSLAM/preprocessing/maskfusion-master-2/deps/densecrf
+# Using maskfusion_SHADER_DIR: /home/wayne/SLAM/DynSLAM/preprocessing/maskfusion-master-2/Core/Shaders
+# Using python:  3.5.2 
+# Using PYTHON_LIBRARIES:  /usr/lib/x86_64-linux-gnu/libpython3.5m.so 
+# Using PYTHON_INCLUDE_DIRS:  /usr/include/python3.5m 
+
 message("=======")
 
 ## Includes
@@ -82,6 +102,9 @@ APPEND_TARGET_ARCH_FLAGS()
 
 set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}  "-Xcompiler;-fPIC;-D_FORCE_INLINES;")
 set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} "--ftz=true;--prec-div=false;--prec-sqrt=false")
+
+# set(CMAKE_BUILD_TYPE "Debug")
+
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}  "-g")

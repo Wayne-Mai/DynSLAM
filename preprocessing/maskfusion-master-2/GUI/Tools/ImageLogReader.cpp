@@ -215,6 +215,10 @@ void ImageLogReader::bufferFramesImpl() {
   for (unsigned i = 0; i < 15 && nextBufferIndex < frames.size(); ++i, ++nextBufferIndex) {
     frames[nextBufferIndex] = loadFrameFromDrive(nextBufferIndex);
   }
+
+  # ifdef WAYNE_DEBUG
+  std::cout<<"\nLog : After buffer frames num : "<<int(nextBufferIndex)<<std::endl;
+  # endif
 }
 
 FrameDataPointer ImageLogReader::loadFrameFromDrive(const size_t& index) {
@@ -282,6 +286,10 @@ FrameDataPointer ImageLogReader::loadFrameFromDrive(const size_t& index) {
 
   result->timestamp = index * 1000.0f / rateHz;
   result->index = index;
+
+  # ifdef WAYNE_DEBUG
+  std::cout<<"\nLog : Imagelog results have been returned.\n";
+  # endif
 
   return result;
 }

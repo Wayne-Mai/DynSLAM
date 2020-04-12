@@ -46,8 +46,8 @@ import pytoml as toml
 import tensorflow as tf
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-if "@MASKFUSION_GPUS_MASKRCNN@" != "":
-    config.gpu_options.visible_device_list="@MASKFUSION_GPUS_MASKRCNN@"
+# if "@MASKFUSION_GPUS_MASKRCNN@" != "":
+#     config.gpu_options.visible_device_list="@MASKFUSION_GPUS_MASKRCNN@"
 session = tf.Session(config=config)
 from keras.backend.tensorflow_backend import set_session, clear_session, _SESSION
 set_session(session)
