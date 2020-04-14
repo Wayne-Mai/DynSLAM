@@ -18,9 +18,9 @@ int WRITE_MASK_INDEX = 0;
 const std::string WRITE_MASK_DIR = "/data/wayne/SLAM/train_log/";
 #endif
 
-#include "../Core/Segmentation/MaskRCNN/MaskRCNN.h"
+// #include "../Core/Segmentation/MaskRCNN/MaskRCNN.h"
 
-class MaskRCNN;
+// class MaskRCNN;
 
 int main(int argc, char* argv[]) {
     // mainControler staff
@@ -163,14 +163,14 @@ int main(int argc, char* argv[]) {
 #endif
 
     // Start process frame
-    FrameDataPointer frame = logReader->getFrameData();
+    
 
     // note initialize MaskRCNN module
     // std::unique_ptr<MaskRCNN> maskRCNN;
     // bool sequentialMaskRCNN;
     // std::queue<FrameDataPointer> queue; //  should be nullptr ???
-    bool sequentialMaskRCNN = true;
-    std::unique_ptr<MaskRCNN> maskRCNN;
+    // bool sequentialMaskRCNN = true;
+    // std::unique_ptr<MaskRCNN> maskRCNN;
 
     // // if(embedMaskRCNN){ // usePreComputedMask
     // if(true){
@@ -197,14 +197,19 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < 10; i++) {
         if (logReader->hasMore()) {
             // processFrame(FrameDataPointer frame, logReader->getframe
-            
+            FrameDataPointer frame = logReader->getFrameData();
+            // std::cout<<"\n Log : frames in log : "<<logReader->frames.size()<<"\n";
+            // std::cout<<"\n Log : Checking the frame data.....\n";
+            // std::cout<<"\n Log : "<<frame->rgb.empty()<<frame->depth.empty()<<std::endl;
+            // std::cout<<"\n Log : Timestamp index "<<frame->timestamp<<" "<<frame->index<<std::endl;
+
         }
     }
 
-#ifdef WAYNE_DEBUG
-    std::cout << "\n Log : Attempt to load the mask num" << frame->mask.total()
-              << std::endl;
-#endif
+// #ifdef WAYNE_DEBUG
+//     std::cout << "\n Log : Attempt to load the mask num" << frame->mask.total()
+//               << std::endl;
+// #endif
 
     // if(frame->mask.total() == 0) {
 

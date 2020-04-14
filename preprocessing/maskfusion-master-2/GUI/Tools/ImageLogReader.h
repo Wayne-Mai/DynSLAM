@@ -17,9 +17,18 @@
 
 #pragma once
 
+
+
+# ifndef TEST_IMGLOG
 #include <Utils/Resolution.h>
 #include <Utils/Stopwatch.h>
 #include <pangolin/utils/file_utils.h>
+#endif
+
+# ifdef TEST_IMGLOG
+#include "Resolution.h"
+#include "Stopwatch.h"
+# endif
 
 #include "LogReader.h"
 

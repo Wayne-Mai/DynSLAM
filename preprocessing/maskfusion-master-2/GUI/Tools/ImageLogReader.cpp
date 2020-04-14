@@ -26,6 +26,8 @@
 #include <iomanip>
 #include <fstream>
 
+# define WAYNE_DEBUG
+
 static std::string cvTypeToString(int type) {
   std::string r;
   uchar depth = type & CV_MAT_DEPTH_MASK;
@@ -208,6 +210,8 @@ void ImageLogReader::bufferLoop() {
     bufferFramesImpl();
     if (bufferingLoopActive) bufferingCondition.wait(lock);
   }
+
+  // note show some log here
 }
 
 void ImageLogReader::bufferFramesImpl() {
@@ -215,6 +219,8 @@ void ImageLogReader::bufferFramesImpl() {
   for (unsigned i = 0; i < 15 && nextBufferIndex < frames.size(); ++i, ++nextBufferIndex) {
     frames[nextBufferIndex] = loadFrameFromDrive(nextBufferIndex);
   }
+
+  std::cout<<"\nLog : After buffer frames num : "<<int(nextBufferIndex)<<std::endl;
 
   # ifdef WAYNE_DEBUG
   std::cout<<"\nLog : After buffer frames num : "<<int(nextBufferIndex)<<std::endl;

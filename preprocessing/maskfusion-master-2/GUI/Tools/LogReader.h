@@ -21,8 +21,21 @@
 #include <string>
 #include <zlib.h>
 #include <poll.h>
+
+#define TEST_IMGLOG
+
+# ifndef TEST_IMGLOG
 #include <Utils/Img.h>
 #include <Utils/Resolution.h>
+#endif
+
+# ifdef TEST_IMGLOG
+#include "Resolution.h"
+#include "Img.h"
+# endif
+
+
+
 #include "../../Core/FrameData.h"
 #include "../../Core/Utils/Intrinsics.h"
 
